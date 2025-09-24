@@ -70,29 +70,30 @@ func main() {
 		mapJson, _ := json.Marshal(projectMap)
 		prompt := fmt.Sprintf(
 			`You are a smart command parser.
-			The user's input comes from voice recognition. which may contain misheard words or un clear phrases.
+			The INPUT comes from voice recognition. which may contain misheard words or un clear phrases.
 
-			Your job:
+			PROCESS:
 			- Identify if the user is asking to "send broadcast" (or similar).
 			- Identify if the user specifies a type: "email" or "sms" (or similar).
 			- Find the project that best matches from this mapping: %s.
-			- Capture the text immediately after the word "message" (or similar synonyms like "msg") as the user's message.
-			- Return only valid JSON in this format:
+			- Capture the text after the word "message" (or similar synonyms like "msg") as the user's message.
+			- Default to use email for type param if no match is found.
+			- Use captured info to constrcut a JSON output
 
-			**Important** Return only valid JSON in this format:
+			DO NOT:
+			- Do not add any extra text, notes, reasoning, comments, or explanation.
+			- Do not complain or respond in any way other than the above forms.
+
+			INPUT: 
+			%s
+			
+	 		OUTPUT:
+			Return only valid JSON in this format:
 			{
 			"route": "broadcast/project/{id}",
 			"extra": "{message}",
 			"type": "{email|sms}"
-			} 
-
-			Rules:
-			- If no good project match is found, output {}
-			- Do not add any extra text, notes, reasoning, comments, or explanation.
-			- Do not complain or respond in any way other than the above forms.
-			- Default to use email for type if no match is found.
-
-			User input: %s`,
+			}`,
 			string(mapJson),
 			req.Request,
 		)
