@@ -26,9 +26,9 @@ type OllamaRespose struct {
 }
 
 type Command struct {
-	Route string `json:"route"`
-	Extra string `json:"extra"`
-	Type  string `json:"type"`
+	Route   string `json:"route"`
+	Message string `json:"message"`
+	Type    string `json:"type"`
 }
 
 func talkToOllama(prompt string) (string, error) {
@@ -70,28 +70,31 @@ func main() {
 		mapJson, _ := json.Marshal(projectMap)
 		prompt := fmt.Sprintf(
 			`You are a smart command parser.
-			The INPUT comes from voice recognition. which may contain misheard words or un clear phrases.
+			The INPUT comes from voice recognition which may contain misheard words or unclear phrases.
+			You may receive repeat or similar requests multiple times, just follow the steps to generate the OUTPUT.
 
-			PROCESS:
-			- Identify if the user is asking to "send broadcast" (or similar).
-			- Identify if the user specifies a type: "email" or "sms" (or similar).
-			- Find the project that best matches from this mapping: %s.
-			- Capture the text after the word "message" (or similar synonyms like "msg") as the user's message.
+ 			INPUT: 
+			%s
+
+			STEPS:
+			- Identify if the user is asking to "broadcast".
+			- Get "type": "email" or "sms" from the INPUT.
+			- Get "message" (or similar synonyms like "msg") from the INPUT.
+			- Find the project id that best matches from this mapping: %s.
 			- Default to use email for type param if no match is found.
-			- Use captured info to constrcut a JSON output
+			- Use captured info to construct the OUTPUT JSON.
+			- Respond with only valid JSON.
 
 			DO NOT:
-			- Do not add any extra text, notes, reasoning, comments, or explanation.
-			- Do not complain or respond in any way other than the above forms.
-
-			INPUT: 
-			%s
+			- Do not add any extra text, notes, reasoning, comments, markdown or explanation.
+			- Do not complain or respond in any way other than the OUTPUT.
+			- Do not over think.
 			
 	 		OUTPUT:
-			Return only valid JSON in this format:
+			Return only valid JSON in this format without backticks:
 			{
 			"route": "broadcast/project/{id}",
-			"extra": "{message}",
+			"message": "{message}",
 			"type": "{email|sms}"
 			}`,
 			string(mapJson),
@@ -105,6 +108,7 @@ func main() {
 		}
 
 		var cmd Command
+		println("Ollama response:", answer)
 		if err := json.Unmarshal([]byte(answer), &cmd); err != nil {
 			c.JSON(422, err)
 		}
