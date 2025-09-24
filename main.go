@@ -75,8 +75,8 @@ func main() {
 
 			STEPS:
 			- Identify if the user is asking to "broadcast".
-			- Get "type": "email" or "sms" from the INPUT.
-			- Capture messages user want to send from the INPUT.
+			- Get type e.g user may say by "email" or "sms" from the INPUT.
+			- Capture messages user want to send from the INPUT, exclude type or other info.
 			- Find the project id that best matches from this mapping: %s.
 			- Default to use email for type param if no match is found.
 			- Use captured info to construct the OUTPUT JSON.
