@@ -73,9 +73,6 @@ func main() {
 			The INPUT comes from voice recognition which may contain misheard words or unclear phrases.
 			You may receive repeat or similar requests multiple times, just follow the steps to generate the OUTPUT.
 
- 			INPUT: 
-			%s
-
 			STEPS:
 			- Identify if the user is asking to "broadcast".
 			- Get "type": "email" or "sms" from the INPUT.
@@ -88,7 +85,10 @@ func main() {
 			DO NOT:
 			- Do not add any extra text, notes, reasoning, comments, markdown or explanation.
 			- Do not complain or respond in any way other than the OUTPUT.
-			- Do not over think.
+			- Do not overthink.
+
+		 	INPUT: 
+			%s
 			
 	 		OUTPUT:
 			Return only valid JSON in this format without backticks:
