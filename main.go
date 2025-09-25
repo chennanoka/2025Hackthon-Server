@@ -89,9 +89,11 @@ func main() {
 
 		 	INPUT: 
 			%s
+
+			IMPORTANT:
+ 			Do NOT return backticks.
 			
 	 		OUTPUT:
-			Return only valid JSON in this format without backticks:
 			{
 			"route": "broadcast/project/{id}",
 			"message": "{message}",
