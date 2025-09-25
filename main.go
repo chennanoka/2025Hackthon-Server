@@ -91,7 +91,7 @@ func main() {
 			%s
 
 			IMPORTANT:
- 			Do NOT return backticks.
+ 			DO NOT return backticks.
 			
 	 		OUTPUT:
 			{
